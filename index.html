@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omnichannel AI Dashboard | Fantasy Edition</title>
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="logo">
+                <span class="logo-icon">✨</span>
+                <h2>OmniAssist</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="active" data-view="inbox">🔮 Omni Inbox</li>
+                <li data-view="live-chat">💬 Live Chat</li>
+                <li data-view="social">🌐 Social Streams</li>
+                <li data-view="voice">🎙️ Voice Transcripts</li>
+            </ul>
+            <div class="ai-status">
+                <div class="pulse-ring"></div>
+                <span>AI Core Online</span>
+            </div>
+        </nav>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-content">
+            <header class="top-bar">
+                <h1 id="current-view-title">Omni Inbox</h1>
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=AI&background=6002ee&color=fff" alt="AI Agent Profile">
+                </div>
+            </header>
+
+            <!-- View Container -->
+            <div id="view-container" class="view-container">
+                <!-- Views will be injected here by app.js -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Templates -->
+    <template id="tmpl-inbox">
+        <div class="grid-layout">
+            <div class="glass-card stat-card glow-cyan">
+                <h3>Active Queries</h3>
+                <p class="stat-num">42</p>
+            </div>
+            <div class="glass-card stat-card glow-magenta">
+                <h3>Sentiment Score</h3>
+                <p class="stat-num">89% <span class="trend up">▲</span></p>
+            </div>
+            <div class="glass-card stat-card glow-purple">
+                <h3>Escalations</h3>
+                <p class="stat-num">3</p>
+            </div>
+        </div>
+        <div class="glass-panel recent-activity">
+            <h2>Live Feed</h2>
+            <div class="activity-list" id="global-feed">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </template>
+
+    <template id="tmpl-live-chat">
+        <div class="chat-interface glass-panel">
+            <div class="chat-sidebar">
+                <h3>Active Convos</h3>
+                <ul id="active-chats">
+                    <li class="chat-session active">
+                        <img src="https://ui-avatars.com/api/?name=Alex&background=random" alt="User">
+                        <div class="chat-preview">
+                            <h4>Alex J.</h4>
+                            <span class="sentiment sentiment-sad">Frustrated</span>
+                        </div>
+                    </li>
+                    <li class="chat-session">
+                        <img src="https://ui-avatars.com/api/?name=Sam&background=random" alt="User">
+                        <div class="chat-preview">
+                            <h4>Sam K.</h4>
+                            <span class="sentiment sentiment-neutral">Neutral</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="chat-main">
+                <div class="chat-header">
+                    <h2>Chatting with Alex J.</h2>
+                    <button class="btn btn-escalate" onclick="handleEscalate('Alex J.', 'high', 'Frustrated user trying to process a return for 3 days.')">⚠️ Escalate</button>
+                </div>
+                <div class="chat-history" id="chat-history">
+                    <div class="msg user-msg">This is the third time I'm asking! Where is my return label?</div>
+                    <div class="typing-indicator">AI is typing...</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" placeholder="Generate response..." id="chat-input">
+                    <button class="btn btn-primary" onclick="sendChat()">Send ✨</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="tmpl-social">
+        <div class="social-feed-grid">
+            <div class="glass-card social-card twitter">
+                <div class="social-header">
+                    <span class="icon">🐦 @User123</span>
+                    <span class="sentiment sentiment-sad">Angry</span>
+                </div>
+                <p>Can completely confirm my app is broken right now. Trying to use OmniAssist but it won't load! Help! #support</p>
+                <button class="btn btn-action">Auto-Reply</button>
+            </div>
+            <div class="glass-card social-card insta">
+                <div class="social-header">
+                    <span class="icon">📸 @photo.guy</span>
+                    <span class="sentiment sentiment-happy">Happy</span>
+                </div>
+                <p>Just received my order and it looks amazing! Thanks so much!! ✨</p>
+                <button class="btn btn-action">Like & Thank</button>
+            </div>
+            <div class="glass-card social-card facebook">
+                <div class="social-header">
+                    <span class="icon">📘 Jane Doe</span>
+                    <span class="sentiment sentiment-neutral">Neutral</span>
+                </div>
+                <p>What time do your stores open tomorrow?</p>
+                <button class="btn btn-action">Send Store Info</button>
+            </div>
+        </div>
+    </template>
+
+    <template id="tmpl-voice">
+        <div class="transcription-review glass-panel">
+            <h2>Call with 'Mark S.' - 3 mins ago</h2>
+            <div class="audio-player">
+                <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+                <div class="wave"></div><div class="wave"></div><div class="wave"></div>
+            </div>
+            <div class="transcript-text">
+                <p><span class="speaker-agent">Agent:</span> Thank you for calling premium support. How can I assist you today?</p>
+                <p><span class="speaker-customer">Customer:</span> Hi, yeah... I'm trying to figure out why I got double charged on my card. <span class="highlight-urgent">It's completely unacceptable.</span></p>
+                <p><span class="speaker-agent">Agent:</span> I apologize for that inconvenience. Let me pull up your account right now.</p>
+            </div>
+            <div class="analysis-panel">
+                <h3>AI Analysis Summary</h3>
+                <p><strong>Intent:</strong> Billing Dispute</p>
+                <p><strong>Sentiment:</strong> Escalating Frustration</p>
+                <p><strong>Resolution Action:</strong> Issue immediate refund for duplicate charge.</p>
+                <button class="btn btn-primary">Authorize Refund</button>
+            </div>
+        </div>
+    </template>
+
+    <script src="app.js"></script>
+</body>
+</html>
